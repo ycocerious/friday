@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -63,7 +63,18 @@ type SignUpValues = z.infer<typeof signUpSchema>;
 export default function SignUpPage() {
   const router = useRouter();
   const [showCreatorFields, setShowCreatorFields] = useState(false);
-  const [, setStoredUser] = useAtom(userAtom);
+  const [storedUser, setStoredUser] = useAtom(userAtom);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient && storedUser) {
+      router.push("/");
+    }
+  }, [isClient, storedUser, router]);
 
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
