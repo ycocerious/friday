@@ -28,6 +28,7 @@ export const users = pgTable("user", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
     () => new Date(),
   ),
+  savedVideos: jsonb("saved_videos").$type<string[]>().default([]),
 });
 
 export const creatorProfiles = pgTable("creator_profile", {
