@@ -1,44 +1,56 @@
 "use server";
 
+import { createHash } from "crypto";
 import { z } from "zod";
-import { generateEmbedding } from "~/lib/ai/embedding";
+import { createSupabaseServerClient } from "~/lib/db/supabase.server";
 import { db } from "../db";
-import { videos, videoTagEmbeddings } from "../db/schema";
+import { videos } from "../db/schema";
 
 const addVideoSchema = z.object({
   creatorId: z.string(),
-  videoUrl: z.string(),
   location: z.string(),
-  tags: z.array(z.string()),
 });
 
 type AddVideoParams = z.infer<typeof addVideoSchema>;
 
 export const addVideo = async (input: AddVideoParams) => {
   try {
-    const { creatorId, videoUrl, location, tags } = addVideoSchema.parse(input);
+    const { creatorId, location } = addVideoSchema.parse(input);
+
+    const supabaseAdmin = createSupabaseServerClient();
+
+    const inputHash = createHash("sha256")
+      .update(
+        JSON.stringify({
+          timestamp: Date.now(),
+          creatorId,
+        }),
+      )
+      .digest("hex");
+    const fileNameInBucket = `video_${inputHash}.mp4`;
+    const videoKey = `${creatorId}/${fileNameInBucket}`;
 
     const [video] = await db
       .insert(videos)
-      .values({ creatorId, videoUrl, location, tags })
+      .values({ creatorId, location, videoKey })
       .returning();
 
     if (!video) {
       throw new Error("Video not found");
     }
 
-    const embeddings = await generateEmbedding(tags.join(", "));
-    await db
-      .insert(videoTagEmbeddings)
-      .values({
-        videoId: video?.id,
-        embedding: embeddings,
-      })
-      .onConflictDoNothing();
-    return "Resource successfully created and embedded.";
+    const signedResponse = await supabaseAdmin.storage
+      .from("creator-videos")
+      .createSignedUploadUrl(videoKey);
+
+    return { success: true, signedResponse, videoId: video.id };
   } catch (error) {
-    return error instanceof Error && error.message.length > 0
-      ? error.message
-      : "Error, please try again.";
+    return {
+      success: false,
+      error:
+        error instanceof Error && error.message.length > 0
+          ? error.message
+          : "Error, please try again.",
+    };
   }
 };

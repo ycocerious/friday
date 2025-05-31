@@ -1,0 +1,1 @@
+ALTER TABLE "video_tag_embedding" ALTER COLUMN "embedding" SET DATA TYPE vector(768);

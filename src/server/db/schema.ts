@@ -47,7 +47,8 @@ export const videos = pgTable("video", {
   creatorId: uuid("creator_id")
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
-  videoUrl: text("video_url").notNull(),
+  videoUrl: text("video_url"),
+  videoKey: text("video_key").notNull(),
   location: text("location").notNull(),
   likes: integer("likes").default(0),
   tags: jsonb("tags").$type<string[]>().default([]),
@@ -66,7 +67,7 @@ export const videoTagEmbeddings = pgTable(
     videoId: uuid("video_id")
       .references(() => videos.id, { onDelete: "cascade" })
       .notNull(),
-    embedding: vector("embedding", { dimensions: 1536 }).notNull(),
+    embedding: vector("embedding", { dimensions: 768 }).notNull(),
   },
   (table) => ({
     videoTagEmbeddingIndex: index("video_tag_embedding_index").using(
