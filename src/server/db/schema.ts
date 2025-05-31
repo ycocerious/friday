@@ -1,27 +1,76 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
-
 import { sql } from "drizzle-orm";
-import { index, pgTableCreator } from "drizzle-orm/pg-core";
+import {
+  index,
+  integer,
+  jsonb,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  varchar,
+  vector,
+} from "drizzle-orm/pg-core";
+import { z } from "zod";
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
-export const createTable = pgTableCreator((name) => `friday_${name}`);
+export const USER_ROLES = ["CREATOR", "TRAVELER"] as const;
+export const userRoleSchema = z.enum(USER_ROLES);
+export type UserRole = z.infer<typeof userRoleSchema>;
 
-export const posts = createTable(
-  "post",
-  (d) => ({
-    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
-    name: d.varchar({ length: 256 }),
-    createdAt: d
-      .timestamp({ withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+export const users = pgTable("user", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  email: varchar("email", { length: 256 }).notNull().unique(),
+  name: varchar("name", { length: 256 }).notNull(),
+  role: varchar("role", { length: 20 }).$type<UserRole>().notNull(),
+  tags: jsonb("tags").$type<string[]>().default([]),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
+export const creatorProfiles = pgTable("creator_profile", {
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .primaryKey(),
+  bio: text("bio"),
+  socialLinks: jsonb("social_links").$type<{
+    instagram?: string;
+    youtube?: string;
+  }>(),
+});
+
+export const videos = pgTable("video", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  creatorId: uuid("creator_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+  videoUrl: text("video_url").notNull(),
+  location: text("location").notNull(),
+  likes: integer("likes").default(0),
+  tags: jsonb("tags").$type<string[]>().default([]),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
+export const videoTagEmbeddings = pgTable(
+  "video_tag_embedding",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    videoId: uuid("video_id")
+      .references(() => videos.id, { onDelete: "cascade" })
       .notNull(),
-    updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+    embedding: vector("embedding", { dimensions: 1536 }).notNull(),
+  },
+  (table) => ({
+    videoTagEmbeddingIndex: index("video_tag_embedding_index").using(
+      "hnsw",
+      table.embedding.op("vector_cosine_ops"),
+    ),
   }),
-  (t) => [index("name_idx").on(t.name)],
 );
