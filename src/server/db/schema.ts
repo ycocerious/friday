@@ -19,6 +19,7 @@ export type UserRole = z.infer<typeof userRoleSchema>;
 export const users = pgTable("user", {
   id: uuid("id").defaultRandom().primaryKey(),
   email: varchar("email", { length: 256 }).notNull().unique(),
+  password: varchar("password", { length: 256 }).notNull(),
   name: varchar("name", { length: 256 }).notNull(),
   role: varchar("role", { length: 20 }).$type<UserRole>().notNull(),
   tags: jsonb("tags").$type<string[]>().default([]),
@@ -47,7 +48,8 @@ export const videos = pgTable("video", {
   creatorId: uuid("creator_id")
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
-  videoUrl: text("video_url").notNull(),
+  videoUrl: text("video_url"),
+  videoKey: text("video_key").notNull(),
   location: text("location").notNull(),
   likes: integer("likes").default(0),
   tags: jsonb("tags").$type<string[]>().default([]),
@@ -66,7 +68,7 @@ export const videoTagEmbeddings = pgTable(
     videoId: uuid("video_id")
       .references(() => videos.id, { onDelete: "cascade" })
       .notNull(),
-    embedding: vector("embedding", { dimensions: 1536 }).notNull(),
+    embedding: vector("embedding", { dimensions: 768 }).notNull(),
   },
   (table) => ({
     videoTagEmbeddingIndex: index("video_tag_embedding_index").using(
