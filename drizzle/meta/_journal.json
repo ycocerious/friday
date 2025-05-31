@@ -29,6 +29,13 @@
       "when": 1748710116685,
       "tag": "0003_thin_wong",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1748717379756,
+      "tag": "0004_bouncy_whistler",
+      "breakpoints": true
     }
   ]
 }

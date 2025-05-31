@@ -6,6 +6,7 @@ export const createUser = async () => {
     email: "test@test.com",
     name: "Test User",
     role: "CREATOR",
+    password: "password",
   });
 };
 

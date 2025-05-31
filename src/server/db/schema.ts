@@ -19,6 +19,7 @@ export type UserRole = z.infer<typeof userRoleSchema>;
 export const users = pgTable("user", {
   id: uuid("id").defaultRandom().primaryKey(),
   email: varchar("email", { length: 256 }).notNull().unique(),
+  password: varchar("password", { length: 256 }).notNull(),
   name: varchar("name", { length: 256 }).notNull(),
   role: varchar("role", { length: 20 }).$type<UserRole>().notNull(),
   tags: jsonb("tags").$type<string[]>().default([]),

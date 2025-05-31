@@ -1,10 +1,14 @@
 "use client";
 
+import { useAtom } from "jotai/react";
 import { Upload } from "lucide-react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { userAtom } from "~/lib/auth";
+
 import { createSupabaseClient } from "~/lib/db/supabase.client";
 import { cn } from "~/lib/utils";
 import { addVideo } from "~/server/actions/add-video";
@@ -13,17 +17,35 @@ import { updateVideo } from "~/server/actions/update-video";
 export default function UploadPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [storedUser] = useAtom(userAtom);
   const supabase = createSupabaseClient();
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient) {
+      if (!storedUser) {
+        router.push("/sign-up");
+      } else if (storedUser.role !== "CREATOR") {
+        router.push("/");
+      }
+    }
+  }, [isClient, storedUser, router]);
 
   const handleFileUpload = async (file: File) => {
     try {
       if (!file) return;
+      if (!storedUser) return;
 
       setIsUploading(true);
 
       // 1. Get signed URL
       const result = await addVideo({
-        creatorId: "955d9d1b-393f-45d2-9e07-328bc7d943ce",
+        creatorId: storedUser.id,
         location: "Bengaluru",
       });
 
