@@ -69,8 +69,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4">
-      <div className="mx-auto w-full max-w-md">
+    <div className="flex h-full min-h-[calc(100vh-4rem)] w-full items-center justify-center">
+      <div className="flex h-full w-full max-w-[450px] items-center justify-center border-2">
         <div
           ref={cardRef}
           onMouseMove={handleMouseMove}
@@ -82,7 +82,7 @@ export default function ProfilePage() {
               : "perspective(1000px) rotateX(0deg) rotateY(0deg)",
             transition: isHovered ? "none" : "transform 0.5s ease-out",
           }}
-          className="w-full"
+          className="w-[90%]"
         >
           <Card
             className={cn(
