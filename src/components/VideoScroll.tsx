@@ -153,7 +153,7 @@ export function VideoScroll() {
 
   if (isLoading) {
     return (
-      <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-black">
+      <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-white">
         <nav className="absolute top-0 z-50 w-full max-w-[450px] bg-transparent">
           <div className="container mx-auto flex h-12 items-center justify-between px-4 pt-10">
             {/* Search bar skeleton */}
@@ -193,14 +193,14 @@ export function VideoScroll() {
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center">
       <div className="absolute top-0 z-50 w-full max-w-[450px] bg-transparent">
-        <div className="container mx-auto flex h-12 items-center justify-between px-4 pt-10">
+        <div className="bg-background/80 container mx-auto flex h-16 items-center justify-between border-2 px-4">
           <div className="flex gap-2">
             <Input
               type="search"
               placeholder="Search videos..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-36 rounded-b-lg bg-white/10 text-white placeholder:text-gray-400"
+              className="w-36 rounded-b-lg bg-white/10 text-gray-500 placeholder:text-gray-400"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSearch();
@@ -211,15 +211,16 @@ export function VideoScroll() {
               onClick={handleSearch}
               variant="secondary"
               size="icon"
-              className="border border-white bg-white/10 text-white hover:bg-white/20"
+              className="border bg-white/10 text-gray-500 hover:bg-white/20"
             >
               <Search className="h-4 w-4" />
             </Button>
           </div>
-          <Link href="/" className="flex items-center gap-3">
-            <span
-              className={`${outfit.className} bg-gradient-to-r from-emerald-300 via-emerald-100 to-teal-200 bg-clip-text text-xl text-transparent`}
-            >
+          <Link
+            href="/"
+            className="flex items-center gap-3 rounded-md border bg-gradient-to-r from-blue-500/20 to-purple-500/20 px-2 py-1"
+          >
+            <span className={`${outfit.className} text-xl text-purple-400`}>
               Friday
             </span>
             <div className="relative h-8 w-8">
@@ -236,14 +237,14 @@ export function VideoScroll() {
       </div>
       <div
         className={cn(
-          "scrollbar-hide flex w-full snap-y snap-mandatory flex-col overflow-y-auto bg-black",
+          "scrollbar-hide flex w-full snap-y snap-mandatory flex-col overflow-y-auto bg-white",
           "h-[100dvh]",
         )}
       >
         {repeatedVideos.map((video) => (
           <div
             key={video?.instanceId}
-            className="relative flex h-[100dvh] w-full flex-shrink-0 snap-start snap-always items-center justify-center bg-black"
+            className="relative flex h-[100dvh] w-full flex-shrink-0 snap-start snap-always items-center justify-center bg-white"
           >
             {video?.videoUrl && (
               <div className="relative w-full">
