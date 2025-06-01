@@ -145,7 +145,7 @@ export function VideoScroll({ videos, className, ...props }: VideoScrollProps) {
           className="relative flex h-[100dvh] w-full flex-shrink-0 snap-start snap-always items-center justify-center bg-black"
         >
           {video.videoUrl && (
-            <div className="relative">
+            <div className="relative w-full">
               {video.creator && (
                 <div className="absolute top-0 right-0 left-0 z-10 bg-gradient-to-b from-black/70 to-transparent p-4">
                   <div className="flex items-center gap-3">
