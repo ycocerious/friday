@@ -9,10 +9,10 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-/* body {
+body {
   height: 100vh;
   border: 1px solid black;
-} */
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
