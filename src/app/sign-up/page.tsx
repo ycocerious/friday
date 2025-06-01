@@ -118,11 +118,11 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center">
-      <div className="flex w-full flex-col items-center justify-center border-2">
-        <div className="flex w-full max-w-[28rem] flex-col items-center justify-center border-2">
-          <Navbar />
-          <div className="flex h-[calc(100vh-4rem)] w-[90%] items-center justify-center">
+    <div className="flex min-h-screen w-full flex-col items-center justify-start">
+      <div className="flex min-h-screen w-full max-w-[28rem] flex-col items-center justify-start border-2">
+        <Navbar />
+        <div className="flex min-h-[calc(100vh-4rem)] w-full flex-col items-center justify-center">
+          <div className="w-[90%] py-8">
             <Card className="w-full max-w-lg">
               <CardHeader>
                 <CardTitle className="text-center text-2xl">
