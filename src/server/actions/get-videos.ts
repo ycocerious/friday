@@ -28,7 +28,7 @@ export async function getVideos(userQuery: string) {
       return bScore - aScore; // Sort in descending order (highest similarity first)
     });
   } else {
-    allVideos = await db.select().from(videos);
+    allVideos = await db.select().from(videos).orderBy(videos.createdAt);
   }
 
   const allCreators = await db

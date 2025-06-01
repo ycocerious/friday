@@ -111,7 +111,7 @@ export default function ProfilePage() {
             <div className="absolute inset-0 bg-gradient-to-br from-blue-400/30 via-purple-400/30 to-purple-600/30 backdrop-blur-[2px]" />
 
             <CardHeader className="relative z-10">
-              <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-yellow-300 to-purple-400 p-1.5 shadow-lg">
+              <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-yellow-300 to-purple-400 p-1.5 shadow-lg">
                 <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -123,12 +123,12 @@ export default function ProfilePage() {
                   </svg>
                 </div>
               </div>
-              <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-blue-50">
+              <h2 className="mt-2 text-center text-3xl font-bold tracking-tight text-blue-50">
                 {profile?.user.name ?? "Anonymous User"}
               </h2>
             </CardHeader>
 
-            <CardContent className="relative z-10 space-y-6 px-8 py-2">
+            <CardContent className="relative z-10 space-y-2 px-8 py-2">
               <div className="flex items-center space-x-4 text-blue-100">
                 <Mail className="h-6 w-6" />
                 <span className="text-lg">{profile?.user.email}</span>
@@ -155,7 +155,7 @@ export default function ProfilePage() {
               )}
 
               {profile?.creator && (
-                <div className="mt-8 space-y-6 border-t border-blue-400/30 pt-6">
+                <div className="mt-2 space-y-2 border-t border-blue-400/30 pt-6">
                   {profile.creator.bio && (
                     <div className="space-y-2">
                       <h3 className="text-sm font-semibold tracking-wider text-blue-200 uppercase">

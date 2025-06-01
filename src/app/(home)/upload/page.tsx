@@ -49,6 +49,9 @@ export default function UploadPage() {
       }
 
       setIsUploading(true);
+      toast.loading("Uploading video...", {
+        id: "uploading-video",
+      });
 
       // 1. Get signed URL
       const result = await addVideo({
@@ -91,7 +94,9 @@ export default function UploadPage() {
       await updateVideo({ videoId });
       console.log("Updated video");
 
-      toast.success("Video uploaded and analyzed successfully.");
+      toast.success("Video uploaded and analyzed successfully.", {
+        id: "uploading-video",
+      });
       router.push("/");
     } catch (error) {
       toast.error(
