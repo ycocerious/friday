@@ -16,7 +16,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className="border-b">
+    <nav className="w-full border-b">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="text-xl font-bold">
           Friday

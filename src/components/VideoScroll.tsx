@@ -145,9 +145,9 @@ export function VideoScroll() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col bg-black">
-        <nav className="absolute top-0 right-0 left-0 z-50 bg-transparent">
-          <div className="container mx-auto flex h-12 items-center justify-between px-4 pt-4">
+      <div className="flex min-h-screen w-full flex-col items-center justify-center bg-black">
+        <nav className="absolute top-0 z-50 w-[430px] bg-transparent">
+          <div className="container mx-auto flex h-12 items-center justify-between px-4 pt-10">
             {/* Search bar skeleton */}
             <div className="flex gap-2">
               <div className="h-10 w-50 animate-pulse rounded-lg bg-gray-800" />
@@ -183,9 +183,9 @@ export function VideoScroll() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <nav className="absolute top-0 right-0 left-0 z-50 bg-transparent">
-        <div className="container mx-auto flex h-12 items-center justify-between px-4 pt-4">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center">
+      <div className="absolute top-0 z-50 w-full max-w-[450px] bg-transparent">
+        <div className="container mx-auto flex h-12 items-center justify-between px-4 pt-10">
           <div className="flex gap-2">
             <Input
               type="search"
@@ -225,10 +225,10 @@ export function VideoScroll() {
             </div>
           </Link>
         </div>
-      </nav>
+      </div>
       <div
         className={cn(
-          "flex w-full snap-y snap-mandatory flex-col overflow-y-auto bg-black",
+          "scrollbar-hide flex w-full snap-y snap-mandatory flex-col overflow-y-auto bg-black",
           "h-[100dvh]",
         )}
       >

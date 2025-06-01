@@ -116,8 +116,8 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-4rem)] w-full items-center justify-center px-4 sm:px-6 lg:px-8">
-      <Card className="mx-auto max-w-md">
+    <div className="mx-auto flex h-full max-w-[450px] items-center justify-center border-2">
+      <Card className="w-[90%] border">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold">
             Upload Video
