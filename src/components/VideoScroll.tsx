@@ -145,7 +145,7 @@ export function VideoScroll() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen w-full flex-col items-center justify-center bg-black">
+      <div className="flex min-h-screen w-full flex-col items-center justify-center bg-gray-900">
         <nav className="absolute top-0 z-50 w-[430px] bg-transparent">
           <div className="container mx-auto flex h-12 items-center justify-between px-4 pt-10">
             {/* Search bar skeleton */}
@@ -228,19 +228,19 @@ export function VideoScroll() {
       </div>
       <div
         className={cn(
-          "scrollbar-hide flex w-full snap-y snap-mandatory flex-col overflow-y-auto bg-black",
+          "scrollbar-hide flex w-full snap-y snap-mandatory flex-col overflow-y-auto bg-gray-900",
           "h-[100dvh]",
         )}
       >
         {repeatedVideos.map((video) => (
           <div
             key={video?.instanceId}
-            className="relative flex h-[100dvh] w-full flex-shrink-0 snap-start snap-always items-center justify-center bg-black"
+            className="relative flex h-[100dvh] w-full flex-shrink-0 snap-start snap-always items-center justify-center bg-gray-900"
           >
             {video?.videoUrl && (
               <div className="relative w-full">
                 {video.creator && (
-                  <div className="absolute top-0 right-0 left-0 z-10 bg-gradient-to-b from-black/70 to-transparent p-4">
+                  <div className="absolute top-0 right-0 left-0 z-10 bg-gradient-to-b from-gray-900/70 to-transparent p-4">
                     <div className="flex items-center gap-3">
                       <div
                         className={cn(
