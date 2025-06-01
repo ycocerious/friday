@@ -66,6 +66,7 @@ export function VideoScroll() {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
   const [userQuery, setUserQuery] = useState("");
+  const [wantsToAccessThisPage, setWantsToAccessThisPage] = useState(false);
 
   const handleSearch = () => {
     setUserQuery(searchInput);
@@ -80,6 +81,8 @@ export function VideoScroll() {
   useEffect(() => {
     if (isClient && !storedUser) {
       router.push("/sign-in");
+    } else {
+      setWantsToAccessThisPage(true);
     }
   }, [isClient, storedUser, router]);
 
@@ -143,7 +146,7 @@ export function VideoScroll() {
     };
   }, []);
 
-  if (!isClient) {
+  if (!isClient || !wantsToAccessThisPage) {
     return (
       <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4 pb-24">
         <p className="text-muted-foreground">Loading...</p>
