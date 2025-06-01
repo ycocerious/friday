@@ -1,311 +1,450 @@
 "use client";
-import Link from "next/link";
-import { Card } from "~/components/ui/card";
 
-export default function HomePage() {
+import {
+  IconBed,
+  IconCompass,
+  IconMapPin,
+  IconRoute,
+  IconShoppingBag,
+} from "@tabler/icons-react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import React, { useEffect, useRef, useState } from "react";
+import { Button } from "~/components/ui/button";
+
+// Spline is for 3D animations
+
+const ICONS = [
+  IconCompass,
+  IconMapPin,
+  IconBed,
+  IconShoppingBag,
+  IconRoute,
+] as const;
+
+export default function LandingPage() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  // Parallax effect on mouse move
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (heroRef.current) {
+        const { left, top, width, height } =
+          heroRef.current.getBoundingClientRect();
+        const x = (e.clientX - left) / width;
+        const y = (e.clientY - top) / height;
+        setMousePosition({ x, y });
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   return (
-    <div
-      className="relative min-h-screen w-full overflow-hidden font-sans"
-      style={{
-        background:
-          "linear-gradient(120deg, #101737 0%, #3a2e6e 60%, #a370f0 100%)",
-      }}
-    >
-      {/* Floating Circles & Glow Effects */}
-      <div className="pointer-events-none absolute inset-0 z-0 select-none">
-        <div className="animate-float-slow absolute top-[-100px] left-[-100px] h-[300px] w-[300px] rounded-full bg-purple-500 opacity-30 blur-3xl" />
-        <div className="animate-float-medium absolute right-[-80px] bottom-[-80px] h-[220px] w-[220px] rounded-full bg-blue-400 opacity-20 blur-2xl" />
-        <div className="animate-float-fast absolute top-[20%] right-[10%] h-[120px] w-[120px] rounded-full bg-indigo-400 opacity-25 blur-2xl" />
-        <div className="animate-float-medium absolute bottom-[15%] left-[15%] h-[100px] w-[100px] rounded-full bg-pink-500 opacity-15 blur-2xl" />
-      </div>
-      {/* Navigation Bar */}
-      <nav className="relative z-10 flex items-center justify-between px-8 py-6">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-400 to-purple-600 text-xl font-bold text-white shadow-lg">
-            F
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#0A0118]">
+      {/* Gradient Background */}
+      <div
+        className="fixed inset-0 z-0"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 25%, rgba(67, 56, 202, 0.05) 50%, transparent 80%)",
+        }}
+      />
+
+      {/* Navigation */}
+      <nav className="fixed top-0 z-50 w-full backdrop-blur-sm">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-2">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600"
+            >
+              <span className="text-xl font-bold text-white">F</span>
+            </motion.div>
           </div>
-          <span className="text-lg font-bold tracking-wide text-white">
-            Friday
-          </span>
-        </div>
-        <div className="flex gap-3">
-          <Link
-            href="/sign-in"
-            className="rounded-full border border-white/20 bg-transparent px-5 py-2 font-bold tracking-wide text-white/80 uppercase transition hover:bg-white/10"
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
           >
-            Log In
-          </Link>
+            <Button
+              asChild
+              className="relative overflow-hidden rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-2 font-semibold text-white transition-all hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]"
+            >
+              <Link href="/sign-in">Get Started</Link>
+            </Button>
+          </motion.div>
         </div>
       </nav>
+
       {/* Hero Section */}
-      <main className="relative z-10 mx-auto flex max-w-7xl flex-col items-center justify-between gap-12 px-6 pt-24 pb-12 md:flex-row md:pb-24">
-        <div className="flex flex-1 flex-col items-start justify-center">
-          <h1 className="mb-6 text-4xl leading-tight font-extrabold text-white drop-shadow-xl sm:text-5xl md:text-6xl">
-            Unlock <span className="text-indigo-300">Travel Content</span>
-            <br />
-            For Every Place
-            <br />
-            <span className="text-purple-200">Just One Click Away!</span>
-          </h1>
-          <p className="mb-10 max-w-xl text-lg text-white/80 sm:text-xl">
-            Discover and share short travel videos tagged to exact locations.{" "}
-            <span className="font-semibold text-indigo-200">Travelers</span>{" "}
-            find inspiration,{" "}
-            <span className="font-semibold text-purple-300">Creators</span>{" "}
-            share their journeys. All in one futuristic platform.
-          </p>
-          <div className="mt-2 flex gap-4">
-            <Link
-              href="/sign-in"
-              className="rounded-full border-none bg-gradient-to-r from-[#232846] to-[#3d3d8a] px-8 py-3 text-base font-extrabold tracking-wider text-white uppercase shadow-lg transition-all duration-200 outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
-              style={{
-                boxShadow: "0 0 16px 2px rgba(255,255,255,0.18)",
-              }}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.boxShadow =
-                  "0 0 28px 6px rgba(255,255,255,0.25)")
-              }
-              onMouseOut={(e) =>
-                (e.currentTarget.style.boxShadow =
-                  "0 0 16px 2px rgba(255,255,255,0.18)")
-              }
+      <section ref={heroRef} className="relative min-h-screen pt-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid gap-12 lg:grid-cols-2">
+            {/* Left Column - Text Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex flex-col justify-center"
             >
-              BE A TRAVELLER
-            </Link>
-            <Link
-              href="/sign-in"
-              className="rounded-full border-none bg-gradient-to-r from-[#3d3d8a] to-[#232846] px-8 py-3 text-base font-extrabold tracking-wider text-white uppercase shadow-lg transition-all duration-200 outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
-              style={{
-                boxShadow: "0 0 16px 2px rgba(255,255,255,0.18)",
-              }}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.boxShadow =
-                  "0 0 28px 6px rgba(255,255,255,0.25)")
-              }
-              onMouseOut={(e) =>
-                (e.currentTarget.style.boxShadow =
-                  "0 0 16px 2px rgba(255,255,255,0.18)")
-              }
-            >
-              BE A CREATOR
-            </Link>
-          </div>
-        </div>
-        <div className="relative flex flex-1 flex-col items-center justify-center">
-          {/* Animated Circle with Avatars/Icons (placeholder) */}
-          <div className="relative h-[340px] w-[340px] md:h-[400px] md:w-[400px]">
-            <div className="animate-pulse-slow absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500/30 to-purple-400/10 blur-2xl" />
-            <div className="animate-spin-slow absolute inset-0 rounded-full border-2 border-indigo-400/30" />
-            <div className="animate-spin-reverse absolute inset-8 rounded-full border border-purple-300/20" />
-            <div className="animate-float-fast absolute top-0 left-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-indigo-300 bg-white/10 shadow-xl">
-              <span role="img" aria-label="traveler" className="text-3xl">
-                🧑‍🦱
-              </span>
-            </div>
-            <div className="animate-float-medium absolute top-1/2 right-0 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border-2 border-purple-300 bg-white/10 shadow-xl">
-              <span role="img" aria-label="creator" className="text-2xl">
-                🎥
-              </span>
-            </div>
-            <div className="animate-float-slow absolute bottom-8 left-0 flex h-12 w-12 items-center justify-center rounded-full border-2 border-blue-300 bg-white/10 shadow-xl">
-              <span role="img" aria-label="location" className="text-2xl">
-                📍
-              </span>
-            </div>
-            <div className="animate-float-medium absolute bottom-0 left-1/2 flex h-14 w-14 -translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full border-2 border-pink-300 bg-white/10 shadow-xl">
-              <span role="img" aria-label="ai" className="text-2xl">
-                🤖
-              </span>
-            </div>
-            <div className="animate-float-fast absolute top-1/2 left-8 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-indigo-200 bg-white/10 shadow-xl">
-              <span role="img" aria-label="explore" className="text-xl">
-                🌎
-              </span>
-            </div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="mb-1 text-4xl font-bold text-white">20k+</div>
-              <div className="text-base tracking-wide text-indigo-200">
-                Videos & Stories
+              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight text-white md:text-6xl lg:text-7xl">
+                Travel
+                <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                  {" "}
+                  Smarter
+                </span>
+                <br />
+                Through Video
+              </h1>
+              <p className="mb-8 max-w-xl text-lg text-gray-300">
+                Discover curated travel content from verified creators. Search
+                destinations, find hidden gems, and plan your next adventure
+                with AI-powered recommendations.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Button
+                  asChild
+                  className="group relative overflow-hidden rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-6 text-lg font-semibold text-white transition-all hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]"
+                >
+                  <Link href="/sign-in">
+                    Start Exploring
+                    <motion.span
+                      className="absolute inset-0 z-0"
+                      style={
+                        {
+                          background:
+                            "radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.15) 0%, transparent 50%)",
+                          "--mouse-x": `${mousePosition.x * 100}%`,
+                          "--mouse-y": `${mousePosition.y * 100}%`,
+                        } as React.CSSProperties
+                      }
+                    />
+                  </Link>
+                </Button>
               </div>
-            </div>
+            </motion.div>
+
+            {/* Right Column - Interactive Animation */}
+            <motion.div
+              className="relative h-[600px] overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600/10 to-purple-600/10 backdrop-blur-sm"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.4 }}
+            >
+              {/* Floating Elements */}
+              <motion.div
+                className="absolute inset-0"
+                animate={{
+                  background: [
+                    "radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%)",
+                    "radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
+                    "radial-gradient(circle at 0% 100%, rgba(99, 102, 241, 0.15) 0%, transparent 50%)",
+                    "radial-gradient(circle at 100% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
+                  ],
+                }}
+                transition={{
+                  duration: 10,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
+              />
+
+              {/* Phone Frame */}
+              <motion.div
+                className="absolute top-1/2 left-1/2 h-[800px] w-[380px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[3rem] border-8 border-white/10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm"
+                whileHover={{ rotateY: 10, rotateX: -10 }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              >
+                {/* Video Reel Mockup */}
+                <div className="absolute inset-0 overflow-hidden">
+                  <motion.div
+                    className="flex flex-col gap-4 p-4"
+                    animate={{
+                      y: [0, "-50%"],
+                    }}
+                    transition={{
+                      y: {
+                        duration: 15,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "linear",
+                      },
+                    }}
+                  >
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="relative aspect-[9/16] w-full overflow-hidden rounded-xl"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <img
+                          src={`/images/${i + 1}.jpg`}
+                          alt={`Travel destination ${i + 1}`}
+                          className="h-full w-full object-cover"
+                        />
+                        <div className="absolute right-4 bottom-4 flex h-8 w-8 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+                          <IconMapPin className="h-4 w-4 text-white/70" />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+              </motion.div>
+
+              {/* Floating Icons */}
+              {Array.from({ length: 5 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute"
+                  initial={{
+                    x: Math.random() * 400 - 200,
+                    y: Math.random() * 400 - 200,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    x: Math.random() * 400 - 200,
+                    y: Math.random() * 400 - 200,
+                    opacity: [0, 1, 0],
+                    scale: [0.5, 1.2, 0.5],
+                  }}
+                  transition={{
+                    duration: Math.random() * 5 + 5,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    ease: "easeInOut",
+                  }}
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm">
+                    {React.createElement(ICONS[i % ICONS.length]!, {
+                      className: "h-6 w-6 text-white/40",
+                    })}
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
-        </div>
-      </main>
-      {/* Why Choose Us Section */}
-      <section
-        id="why"
-        className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-6 py-24"
-      >
-        <h2 className="mb-12 w-full text-left text-4xl font-extrabold text-white sm:text-5xl">
-          Why Choose <span className="text-[#7f5fff]">Us?</span>
-        </h2>
-        <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-2">
-          {/* Feature Card 1 */}
-          <Card className="flex min-h-[150px] min-w-[230px] flex-col rounded-2xl border border-white/10 bg-[#181a2c]/85 p-8 shadow-xl">
-            <div className="mb-2 flex items-center gap-4">
-              <span className="text-2xl font-extrabold text-pink-500 drop-shadow">
-                01
-              </span>
-              <span className="text-lg font-bold text-white">
-                Curated Creators
-              </span>
-            </div>
-            <div className="pl-10 text-base text-indigo-100">
-              Invite-only, authentic travel creators who know their locations.
-            </div>
-          </Card>
-          {/* Feature Card 2 */}
-          <Card className="flex min-h-[150px] min-w-[230px] flex-col rounded-2xl border border-white/10 bg-[#181a2c]/85 p-8 shadow-xl">
-            <div className="mb-2 flex items-center gap-4">
-              <span className="text-2xl font-extrabold text-pink-500 drop-shadow">
-                02
-              </span>
-              <span className="text-lg font-bold text-white">
-                AI-Powered Search
-              </span>
-            </div>
-            <div className="pl-10 text-base text-indigo-100">
-              Semantic, natural language search for travel inspiration.
-            </div>
-          </Card>
-          {/* Feature Card 3 */}
-          <Card className="flex min-h-[150px] min-w-[230px] flex-col rounded-2xl border border-white/10 bg-[#181a2c]/85 p-8 shadow-xl">
-            <div className="mb-2 flex items-center gap-4">
-              <span className="text-2xl font-extrabold text-pink-500 drop-shadow">
-                03
-              </span>
-              <span className="text-lg font-bold text-white">
-                Location-First Discovery
-              </span>
-            </div>
-            <div className="pl-10 text-base text-indigo-100">
-              Search videos by exact places, not just hashtags or trends.
-            </div>
-          </Card>
-          {/* Feature Card 4 */}
-          <Card className="flex min-h-[150px] min-w-[230px] flex-col rounded-2xl border border-white/10 bg-[#181a2c]/85 p-8 shadow-xl">
-            <div className="mb-2 flex items-center gap-4">
-              <span className="text-2xl font-extrabold text-pink-500 drop-shadow">
-                04
-              </span>
-              <span className="text-lg font-bold text-white">
-                Personalized Feeds
-              </span>
-            </div>
-            <div className="pl-10 text-base text-indigo-100">
-              Tailored content for both travelers and creators.
-            </div>
-          </Card>
         </div>
       </section>
-      {/* Consolidated Custom CSS for Feature Cards, Animations, and CTA Styles */}
-      <style jsx>{`
-        .why-card-clean {
-          background: rgba(24, 26, 44, 0.85);
-          border-radius: 1.25rem;
-          border: 1.5px solid #fff2;
-          padding: 2.2rem 1.8rem 1.8rem 1.8rem;
-          display: flex;
-          flex-direction: column;
-          min-width: 230px;
-          min-height: 150px;
-        }
-        .why-number-clean {
-          font-size: 1.5rem;
-          font-weight: 800;
-          color: #ff3c8c;
-          text-shadow: 0 0 6px #ff3c8c55;
-          flex-shrink: 0;
-        }
-        .why-title-clean {
-          font-size: 1.1rem;
-          font-weight: 700;
-          color: #fff;
-        }
-        .why-desc-clean {
-          color: #bcbcf5;
-          font-size: 1rem;
-          margin-left: 2.2rem;
-          margin-top: 0.2rem;
-        }
-        .cta-neon {
-  @apply px-8 py-3 rounded-full font-bold uppercase tracking-wider text-base outline-none transition-all duration-200 shadow-xl;
-  background: linear-gradient(90deg, rgba(20,20,40,0.90) 60%, rgba(120,60,255,0.90) 100%);
-  color: #fff;
-  border: none;
-  position: relative;
-  box-shadow: 0 2px 24px 4px #7f5fffcc, 0 0 12px 2px #00f0ff55;
-}
-.cta-neon:hover {
-  filter: brightness(1.3) drop-shadow(0 0 18px #00f0ff) drop-shadow(0 0 24px #7f5fff);
-  transform: scale(1.09);
-  background: linear-gradient(90deg, rgba(120,60,255,1) 60%, rgba(20,20,40,1) 100%);
-}
-.cta-alt {
-  background: linear-gradient(90deg, rgba(20,20,40,0.90) 60%, rgba(58,46,110,0.90) 100%);
-  box-shadow: 0 2px 24px 4px #a370f0cc, 0 0 12px 2px #7f5fff55;
-}
 
-  @apply px-8 py-3 rounded-full font-bold uppercase tracking-wider text-base outline-none transition-all duration-200 shadow-xl;
-  background: linear-gradient(90deg, rgba(30,30,40,0.85) 60%, rgba(120,60,255,0.85) 100%);
-  color: #fff;
-  border: none;
-  position: relative;
-  box-shadow: 0 2px 16px 2px #a370f0aa, 0 0 8px 1px #fff3b088;
-}
-.cta-neon:hover {
-  filter: brightness(1.2) drop-shadow(0 0 12px #fff3b0);
-  transform: scale(1.07);
-  background: linear-gradient(90deg, rgba(120,60,255,0.95) 60%, rgba(30,30,40,0.95) 100%);
-}
-.cta-alt {
-  background: linear-gradient(90deg, rgba(30,30,40,0.85) 60%, rgba(255,169,159,0.85) 100%);
-  box-shadow: 0 2px 16px 2px #ffa99faa, 0 0 8px 1px #fff3b088;
-}
+      {/* Features Grid */}
+      <section className="relative py-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="mb-16 text-center"
+          >
+            <h2 className="mb-4 text-4xl font-bold text-white md:text-5xl">
+              Discover What&apos;s Possible
+            </h2>
+            <p className="text-lg text-gray-300">
+              Everything you need for your next adventure, all in one place
+            </p>
+          </motion.div>
 
-          @apply px-8 py-3 rounded-full bg-gradient-to-r from-[#23213a] to-[#4f3cc9] text-white font-bold uppercase tracking-wider shadow-lg transition-all duration-200 text-base outline-none;
-          box-shadow: 0 0 16px 2px #a78bfa55, 0 0 8px 1px #6366f155;
-          border: none;
-          position: relative;
-        }
-        .cta-pill:hover {
-          filter: brightness(1.15) drop-shadow(0 0 8px #a78bfa);
-          transform: scale(1.05);
-        }
-        .cta-alt {
-          @apply bg-gradient-to-r from-[#4f3cc9] to-[#23213a] border border-indigo-400;
-        }
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-24px); }
-        }
-        @keyframes float-medium {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-16px); }
-        }
-        @keyframes float-fast {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
-        }
-        .animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
-        .animate-float-medium { animation: float-medium 4s ease-in-out infinite; }
-        .animate-float-fast { animation: float-fast 2.5s ease-in-out infinite; }
-        @keyframes spin-slow {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        .animate-spin-slow { animation: spin-slow 18s linear infinite; }
-        @keyframes spin-reverse {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(-360deg); }
-        }
-        .animate-spin-reverse { animation: spin-reverse 28s linear infinite; }
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.4; }
-          50% { opacity: 0.7; }
-        }
-        .animate-pulse-slow { animation: pulse-slow 4.5s ease-in-out infinite; }
-      `}</style>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="group rounded-3xl bg-gradient-to-b from-white/[0.07] to-transparent p-8 transition-all hover:shadow-[0_0_30px_rgba(139,92,246,0.2)]"
+              >
+                <div className="mb-4 inline-block rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 p-3">
+                  {feature.icon}
+                </div>
+                <h3 className="mb-3 text-xl font-semibold text-white">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-400">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Creator Section */}
+      <section className="relative py-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid gap-12 lg:grid-cols-2">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex flex-col justify-center"
+            >
+              <h2 className="mb-6 text-4xl font-bold text-white md:text-5xl">
+                For Creators,
+                <br />
+                <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                  By Creators
+                </span>
+              </h2>
+              <p className="mb-8 max-w-xl text-lg text-gray-300">
+                Join our exclusive community of travel content creators.
+                Monetize your content, engage with your audience, and grow your
+                influence.
+              </p>
+              <ul className="space-y-4">
+                {creatorBenefits.map((benefit, index) => (
+                  <motion.li
+                    key={benefit}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-center gap-3 text-gray-300"
+                  >
+                    <span className="rounded-full bg-indigo-600/20 p-1">
+                      <IconCompass className="h-5 w-5 text-indigo-400" />
+                    </span>
+                    {benefit}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Right side animation/image */}
+            <motion.div
+              className="relative h-[600px] overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600/10 to-indigo-600/10 backdrop-blur-sm"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.4 }}
+            >
+              {/* Grid Background */}
+              <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 gap-4 p-8">
+                {Array.from({ length: 64 }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="rounded-lg bg-white/5"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 0.1, 0] }}
+                    transition={{
+                      duration: 2,
+                      delay: i * 0.05,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Analytics Visualization */}
+              <motion.div
+                className="absolute top-1/2 left-1/2 h-[60%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 backdrop-blur-sm"
+                whileHover={{ rotateX: 10, rotateY: -10 }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              >
+                <div className="relative h-full">
+                  {/* Bar Chart Animation */}
+                  <div className="absolute right-0 bottom-0 left-0 flex h-[70%] items-end justify-around gap-3">
+                    {[0.6, 0.8, 0.4, 0.9, 0.5, 0.7].map((height, i) => (
+                      <motion.div
+                        key={i}
+                        className="w-8 rounded-t-lg bg-gradient-to-t from-indigo-500/40 to-purple-500/40"
+                        initial={{ height: 0 }}
+                        animate={{ height: `${height * 100}%` }}
+                        transition={{
+                          duration: 2,
+                          delay: i * 0.2,
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          ease: "easeInOut",
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Floating Stats */}
+              {Array.from({ length: 4 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute"
+                  initial={{
+                    x: Math.random() * 300 - 150,
+                    y: Math.random() * 300 - 150,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    x: Math.random() * 300 - 150,
+                    y: Math.random() * 300 - 150,
+                    opacity: [0, 1, 0],
+                    scale: [0.8, 1, 0.8],
+                  }}
+                  transition={{
+                    duration: Math.random() * 4 + 4,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                  }}
+                >
+                  <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">
+                    <p className="text-sm text-white/70">
+                      {
+                        [
+                          "1.2K Views",
+                          "↑ 23% Growth",
+                          "89% Engagement",
+                          "4.8★ Rating",
+                        ][i]
+                      }
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
+
+const features = [
+  {
+    title: "AI-Powered Discovery",
+    description:
+      "Find exactly what you're looking for with our semantic search engine that understands natural language queries.",
+    icon: <IconCompass className="h-6 w-6 text-white" />,
+  },
+  {
+    title: "Precise Locations",
+    description:
+      "Every video is tagged with exact GPS coordinates. Never wonder 'where was this filmed?' again.",
+    icon: <IconMapPin className="h-6 w-6 text-white" />,
+  },
+  {
+    title: "Smart Bookings",
+    description:
+      "Book hotels, restaurants, and experiences directly from the videos you love.",
+    icon: <IconBed className="h-6 w-6 text-white" />,
+  },
+  {
+    title: "Shop The Look",
+    description:
+      "Love what the creator is wearing? Shop their outfits and travel gear directly.",
+    icon: <IconShoppingBag className="h-6 w-6 text-white" />,
+  },
+  {
+    title: "AI Itinerary Planning",
+    description:
+      "Create perfect travel itineraries based on the content you save.",
+    icon: <IconRoute className="h-6 w-6 text-white" />,
+  },
+];
+
+const creatorBenefits = [
+  "Direct monetization through content and bookings",
+  "Organize exclusive trips with your community",
+  "Analytics and insights about your audience",
+  "Affiliate revenue from hotel and product recommendations",
+  "Early access to new platform features",
+];
