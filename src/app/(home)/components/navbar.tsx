@@ -27,7 +27,7 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed right-0 bottom-0 left-0 flex justify-center">
+    <div className="fixed right-0 bottom-0 left-0 z-50 flex justify-center">
       <nav className="bg-background/80 w-full max-w-[450px] border-2 backdrop-blur-lg">
         <div className="mx-auto flex h-16 items-center justify-around px-6">
           {navItems.map((item) => {
