@@ -1,0 +1,18 @@
+{
+  "theme_color": "#000000",
+  "background_color": "#fef9f3",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "Friday",
+  "short_name": "Friday",
+  "description": "Social Media for travellers",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
