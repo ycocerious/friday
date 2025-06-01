@@ -150,39 +150,8 @@ export function VideoScroll() {
 
   if (isLoading) {
     return (
-      <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-white">
-        <nav className="absolute top-0 z-50 w-full max-w-[450px] bg-transparent">
-          <div className="container mx-auto flex h-12 items-center justify-between px-4 pt-10">
-            {/* Search bar skeleton */}
-            <div className="flex gap-2">
-              <div className="h-10 w-36 animate-pulse rounded-lg bg-gray-800" />
-              <div className="h-9 w-9 animate-pulse rounded-lg bg-gray-800" />
-            </div>
-            {/* Logo and brand skeleton */}
-            <div className="flex items-center gap-3">
-              <div className="h-8 w-16 animate-pulse rounded-md bg-gray-800" />
-              <div className="h-8 w-8 animate-pulse rounded-full bg-gray-800" />
-            </div>
-          </div>
-        </nav>
-        <div className="flex h-[100dvh] w-full items-center justify-center">
-          <div className="relative w-full px-4">
-            {/* Video skeleton */}
-            <div className="aspect-[9/16] w-full animate-pulse rounded-lg bg-gray-800">
-              <div className="absolute top-4 left-4 flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-gray-700" />
-                <div className="h-4 w-32 rounded bg-gray-700" />
-              </div>
-            </div>
-            {/* Loading text */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <div className="flex items-center gap-2 text-gray-400">
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-gray-500 border-t-white" />
-                <span>Loading videos...</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="flex h-full min-h-[calc(100vh-4rem)] w-full items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     );
   }

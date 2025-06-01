@@ -2,20 +2,30 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { Instagram, Mail, Shield, Tags, Video, Youtube } from "lucide-react";
+import {
+  Instagram,
+  LogOut,
+  Mail,
+  Shield,
+  Tags,
+  Video,
+  Youtube,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { userAtom } from "~/lib/auth";
 import { cn } from "~/lib/utils";
 import { getProfile } from "~/server/actions/get-profile";
 
 export default function ProfilePage() {
-  const [user] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [isClient, setIsClient] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -48,6 +58,11 @@ export default function ProfilePage() {
 
   const handleMouseEnter = () => {
     setIsHovered(true);
+  };
+
+  const handleSignOut = () => {
+    setUser(null);
+    router.push("/sign-in");
   };
 
   if (isLoading) {
@@ -199,6 +214,17 @@ export default function ProfilePage() {
                   )}
                 </div>
               )}
+
+              <div className="mt-8 border-t border-blue-400/30 pt-6">
+                <Button
+                  variant="destructive"
+                  className="w-full cursor-pointer bg-white text-red-500 hover:bg-white/80"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
