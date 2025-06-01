@@ -77,8 +77,8 @@ export async function analyzeVideo(uploadedVideoUrl: string) {
     },
   ] as Array<TextPart | ImagePart | FilePart>;
 
-  const { object } = await generateObject({
-    model: google("gemini-2.5-flash-preview-04-17"),
+  const { object, usage } = await generateObject({
+    model: google("gemini-2.0-flash"),
     schema: travelVideoAnalysisSchema,
     schemaName: "TravelVideoAnalysisSchema",
     schemaDescription: "A comprehensive analysis of a travel video",
@@ -125,6 +125,15 @@ export async function analyzeVideo(uploadedVideoUrl: string) {
     ].join("\n"),
     messages: [{ role: "user", content }],
   });
+
+  console.log("usage", usage);
+  console.log(
+    "cost of call",
+    ((usage.promptTokens * 0.1) / 1000000 +
+      (usage.completionTokens * 0.4) / 1000000) *
+      85,
+    "rupees",
+  );
 
   return object;
 }
