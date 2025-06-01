@@ -77,7 +77,7 @@ export default function SignInPage() {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">
       <div className="flex w-full flex-col items-center justify-center border-2">
-        <div className="flex w-full max-w-[28rem] flex-col items-center justify-center border-2">
+        <div className="flex w-full max-w-[26rem] flex-col items-center justify-center border-2">
           <Navbar />
           <div className="flex h-[calc(100vh-4rem)] w-[90%] items-center justify-center">
             <Card className="w-full max-w-lg border">

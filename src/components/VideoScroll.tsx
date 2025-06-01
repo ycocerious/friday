@@ -158,7 +158,7 @@ export function VideoScroll() {
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center">
-      <div className="absolute top-0 z-50 w-full max-w-[28rem] bg-transparent">
+      <div className="absolute top-0 z-50 w-full max-w-[26rem] bg-transparent">
         <div className="bg-background/80 container mx-auto flex h-16 items-center justify-between border-y-2 px-4">
           <div className="flex gap-2">
             <Input

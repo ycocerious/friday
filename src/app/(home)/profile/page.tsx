@@ -85,7 +85,7 @@ export default function ProfilePage() {
 
   return (
     <div className="flex h-full min-h-[calc(100vh-4rem)] w-full items-center justify-center">
-      <div className="flex h-full w-full max-w-[28rem] items-center justify-center border-2">
+      <div className="flex h-full w-full max-w-[26rem] items-center justify-center border-2">
         <div
           ref={cardRef}
           onMouseMove={handleMouseMove}
