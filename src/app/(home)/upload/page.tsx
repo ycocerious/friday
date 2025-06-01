@@ -118,7 +118,7 @@ export default function UploadPage() {
 
   return (
     <div className="flex h-full w-full items-center justify-center">
-      <div className="flex h-full w-full max-w-[450px] items-center justify-center border-2 bg-gray-900 p-4">
+      <div className="flex h-full w-full max-w-[450px] items-center justify-center border-2 bg-black p-4">
         <Card
           className={cn(
             "relative w-full overflow-hidden",
@@ -148,7 +148,7 @@ export default function UploadPage() {
             </h2>
           </CardHeader>
 
-          <CardContent className="relative z-10 space-y-6 p-8">
+          <CardContent className="relative z-10 space-y-6 px-8 py-2">
             <div className="space-y-2">
               <h3 className="text-sm font-semibold tracking-wider text-blue-200 uppercase">
                 Location Details

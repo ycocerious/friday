@@ -72,7 +72,7 @@ export default function ProfilePage() {
 
   return (
     <div className="flex h-full w-full items-center justify-center">
-      <div className="flex h-full w-full max-w-[450px] items-center justify-center border-2 bg-gray-900 p-4">
+      <div className="flex h-full w-full max-w-[450px] items-center justify-center border-2 bg-black p-4">
         <div
           ref={cardRef}
           onMouseMove={handleMouseMove}
@@ -115,7 +115,7 @@ export default function ProfilePage() {
               </h2>
             </CardHeader>
 
-            <CardContent className="relative z-10 space-y-6 p-8">
+            <CardContent className="relative z-10 space-y-6 px-8 py-2">
               <div className="flex items-center space-x-4 text-blue-100">
                 <Mail className="h-6 w-6" />
                 <span className="text-lg">{profile?.user.email}</span>
