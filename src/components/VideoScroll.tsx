@@ -1,5 +1,6 @@
 "use client";
 
+import { useAtom } from "jotai/react";
 import {
   CircleUser,
   User,
@@ -9,7 +10,9 @@ import {
   UserSquare,
   UserSquare2,
 } from "lucide-react";
-import { useEffect, useRef, type ComponentProps } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState, type ComponentProps } from "react";
+import { userAtom } from "~/lib/auth";
 import { cn } from "~/lib/utils";
 
 // Array of avatar icons
@@ -34,6 +37,19 @@ const AVATAR_COLORS = [
   "text-indigo-500",
 ] as const;
 
+// Add this utility function at the top of the file after the constants
+function getConsistentRandomIndex(str: string, arrayLength: number) {
+  // Create a simple hash of the string
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  // Get a positive number and mod it by array length
+  return Math.abs(hash) % arrayLength;
+}
+
 interface VideoScrollProps extends ComponentProps<"div"> {
   videos: {
     id: string;
@@ -44,17 +60,41 @@ interface VideoScrollProps extends ComponentProps<"div"> {
 
 export function VideoScroll({ videos, className, ...props }: VideoScrollProps) {
   const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
+  const [storedUser] = useAtom(userAtom);
+  const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
 
-  // Create repeated video array with unique instance IDs and random avatar props
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient && !storedUser) {
+      router.push("/sign-in");
+    }
+  }, [isClient, storedUser, router]);
+
+  // Update the repeated videos creation to use deterministic selection
   const repeatedVideos = Array.from({ length: 20 }, (_, index) => {
     const videoIndex = index % videos.length;
     const video = videos[videoIndex];
+    const instanceId = `${video!.id}-${index}`;
+
+    // Use the instanceId to consistently select avatar and color
+    const avatarIndex = getConsistentRandomIndex(
+      instanceId,
+      AVATAR_ICONS.length,
+    );
+    const colorIndex = getConsistentRandomIndex(
+      instanceId + "color",
+      AVATAR_COLORS.length,
+    );
+
     return {
       ...video,
-      instanceId: `${video!.id}-${index}`,
-      avatarIcon: AVATAR_ICONS[Math.floor(Math.random() * AVATAR_ICONS.length)],
-      avatarColor:
-        AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)],
+      instanceId,
+      avatarIcon: AVATAR_ICONS[avatarIndex],
+      avatarColor: AVATAR_COLORS[colorIndex],
     };
   });
 
