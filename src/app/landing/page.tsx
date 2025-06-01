@@ -73,10 +73,17 @@ export default function LandingPage() {
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600"
+                className="flex h-10 w-10 items-center justify-center"
               >
-                <span className="text-xl font-bold text-white">F</span>
+                <img
+                  src="/logo.png"
+                  alt="Friday Logo"
+                  className="h-full w-full rounded-xl object-contain"
+                />
               </motion.div>
+              <span className="text-xl font-semibold text-purple-400">
+                Friday
+              </span>
             </div>
             <motion.div
               initial={{ opacity: 0, y: -20 }}
