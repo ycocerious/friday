@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { sql, type InferSelectModel } from "drizzle-orm";
 import {
   index,
   integer,
@@ -77,3 +77,5 @@ export const videoTagEmbeddings = pgTable(
     ),
   }),
 );
+
+export type Video = InferSelectModel<typeof videos>;

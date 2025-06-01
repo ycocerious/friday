@@ -1,9 +1,36 @@
-import { eq } from "drizzle-orm";
-import { db } from "~/server/db";
-import { users, videos } from "~/server/db/schema";
+"use server";
 
-export async function getVideos() {
-  const allVideos = await db.select().from(videos);
+import { eq, inArray } from "drizzle-orm";
+import { db } from "~/server/db";
+import { users, videos, type Video } from "~/server/db/schema";
+import { getRelevantVideos } from "./get-relevant-videos";
+
+export async function getVideos(userQuery: string) {
+  let allVideos: Video[] = [];
+  if (userQuery !== "") {
+    const relevantVideos = await getRelevantVideos(userQuery);
+    allVideos = await db
+      .select()
+      .from(videos)
+      .where(
+        inArray(
+          videos.id,
+          relevantVideos.map((video) => video.videoId),
+        ),
+      );
+
+    // Sort allVideos based on the similarity scores from relevantVideos
+    allVideos.sort((a, b) => {
+      const aScore =
+        relevantVideos.find((v) => v.videoId === a.id)?.similarity ?? 0;
+      const bScore =
+        relevantVideos.find((v) => v.videoId === b.id)?.similarity ?? 0;
+      return bScore - aScore; // Sort in descending order (highest similarity first)
+    });
+  } else {
+    allVideos = await db.select().from(videos);
+  }
+
   const allCreators = await db
     .select()
     .from(users)

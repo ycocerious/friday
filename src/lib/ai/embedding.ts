@@ -15,14 +15,14 @@ export const generateEmbedding = async (value: string): Promise<number[]> => {
   return embedding;
 };
 
-export const findRelevantContent = async (searchTags: string[]) => {
-  const searchTagsEmbedded = await generateEmbedding(searchTags.join(", "));
+export const findRelevantContent = async (userQuery: string) => {
+  const searchTagsEmbedded = await generateEmbedding(userQuery);
   const similarity = sql<number>`1 - (${cosineDistance(videoTagEmbeddings.embedding, searchTagsEmbedded)})`;
   const similarGuides = await db
     .select({ videoId: videoTagEmbeddings.videoId, similarity })
     .from(videoTagEmbeddings)
-    .where(gt(similarity, 0.3))
+    .where(gt(similarity, 0.4))
     .orderBy((t) => desc(t.similarity))
-    .limit(10);
+    .limit(20);
   return similarGuides;
 };

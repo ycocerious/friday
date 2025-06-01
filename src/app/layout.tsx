@@ -3,6 +3,7 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import { QueryProvider } from "~/providers/query-provider";
 
 export const metadata: Metadata = {
   title: "Friday",
@@ -30,8 +31,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable}`}>
       <body>
-        <Toaster position="top-center" />
-        {children}
+        <QueryProvider>
+          <Toaster position="top-center" />
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );
