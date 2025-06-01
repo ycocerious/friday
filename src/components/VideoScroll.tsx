@@ -150,7 +150,7 @@ export function VideoScroll() {
           <div className="container mx-auto flex h-12 items-center justify-between px-4 pt-10">
             {/* Search bar skeleton */}
             <div className="flex gap-2">
-              <div className="h-10 w-50 animate-pulse rounded-lg bg-gray-800" />
+              <div className="h-10 w-36 animate-pulse rounded-lg bg-gray-800" />
               <div className="h-9 w-9 animate-pulse rounded-lg bg-gray-800" />
             </div>
             {/* Logo and brand skeleton */}
@@ -192,7 +192,7 @@ export function VideoScroll() {
               placeholder="Search videos..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-50 rounded-b-lg bg-white/10 text-white placeholder:text-gray-400"
+              className="w-36 rounded-b-lg bg-white/10 text-white placeholder:text-gray-400"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSearch();

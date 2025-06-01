@@ -117,8 +117,8 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="flex h-full w-full max-w-[450px] items-center justify-center border-2 bg-black p-4">
+    <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4">
+      <div className="mx-auto w-full max-w-md">
         <Card
           className={cn(
             "relative w-full overflow-hidden",

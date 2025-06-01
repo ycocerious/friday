@@ -52,17 +52,15 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-full w-full items-center justify-center">
-        <div className="flex h-full w-full max-w-[450px] items-center justify-center border-2 p-4">
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
+      <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4 pb-24">
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     );
   }
 
   if (isClient && !user) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center">
+      <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4 pb-24">
         <p className="text-muted-foreground">
           Please sign in to view your profile
         </p>
@@ -71,8 +69,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="flex h-full w-full max-w-[450px] items-center justify-center border-2 bg-black p-4">
+    <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4">
+      <div className="mx-auto w-full max-w-md">
         <div
           ref={cardRef}
           onMouseMove={handleMouseMove}
@@ -84,7 +82,7 @@ export default function ProfilePage() {
               : "perspective(1000px) rotateX(0deg) rotateY(0deg)",
             transition: isHovered ? "none" : "transform 0.5s ease-out",
           }}
-          className="w-full max-w-md"
+          className="w-full"
         >
           <Card
             className={cn(
