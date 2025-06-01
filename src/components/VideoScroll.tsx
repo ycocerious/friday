@@ -145,8 +145,8 @@ export function VideoScroll() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen w-full flex-col items-center justify-center bg-black">
-        <nav className="absolute top-0 z-50 w-[430px] bg-transparent">
+      <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-black">
+        <nav className="absolute top-0 z-50 w-full max-w-[450px] bg-transparent">
           <div className="container mx-auto flex h-12 items-center justify-between px-4 pt-10">
             {/* Search bar skeleton */}
             <div className="flex gap-2">
