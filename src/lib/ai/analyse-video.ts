@@ -78,7 +78,7 @@ export async function analyzeVideo(uploadedVideoUrl: string) {
   ] as Array<TextPart | ImagePart | FilePart>;
 
   const { object, usage } = await generateObject({
-    model: google("gemini-2.0-flash"),
+    model: google("gemini-2.5-flash-preview-04-17"),
     schema: travelVideoAnalysisSchema,
     schemaName: "TravelVideoAnalysisSchema",
     schemaDescription: "A comprehensive analysis of a travel video",
