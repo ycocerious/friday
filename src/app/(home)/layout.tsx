@@ -1,10 +1,10 @@
 import { type PropsWithChildren } from "react";
-import { Navbar } from "./components/navbar";
+import { Logo } from "./components/logo";
 
 export default function HomeLayout({ children }: PropsWithChildren) {
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar />
+      <Logo />
       {children}
     </div>
   );

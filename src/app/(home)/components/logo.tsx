@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
-export function Navbar() {
+export function Logo() {
   return (
     <nav className="absolute top-0 right-0 left-0 z-50 bg-transparent">
       <div className="container mx-auto flex h-12 items-center justify-end px-4 pt-4">
