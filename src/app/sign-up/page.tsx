@@ -3,10 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
+import { Navbar } from "~/components/navbar";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {
@@ -62,7 +63,18 @@ type SignUpValues = z.infer<typeof signUpSchema>;
 export default function SignUpPage() {
   const router = useRouter();
   const [showCreatorFields, setShowCreatorFields] = useState(false);
-  const [, setStoredUser] = useAtom(userAtom);
+  const [storedUser, setStoredUser] = useAtom(userAtom);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient && storedUser) {
+      router.push("/");
+    }
+  }, [isClient, storedUser, router]);
 
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
@@ -106,189 +118,195 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-4rem)] w-full items-center justify-center px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-lg">
-        <CardHeader>
-          <CardTitle className="text-center text-2xl">
-            Create an account
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="you@example.com"
-                        type="email"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter your password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Confirm your password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>I am a</FormLabel>
-                    <Select
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                        setShowCreatorFields(value === "CREATOR");
-                      }}
-                      defaultValue={field.value}
-                    >
+    <>
+      <Navbar />
+      <div className="mx-auto flex h-[calc(100vh-4rem)] w-full items-center justify-center px-4 sm:px-6 lg:px-8">
+        <Card className="w-full max-w-lg">
+          <CardHeader>
+            <CardTitle className="text-center text-2xl">
+              Create an account
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select your role" />
-                        </SelectTrigger>
+                        <Input
+                          placeholder="you@example.com"
+                          type="email"
+                          {...field}
+                        />
                       </FormControl>
-                      <SelectContent>
-                        {USER_ROLES.map((role) => (
-                          <SelectItem key={role} value={role}>
-                            {role.charAt(0) + role.slice(1).toLowerCase()}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="John Doe" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Enter your password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Confirm your password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>I am a</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          setShowCreatorFields(value === "CREATOR");
+                        }}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select your role" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {USER_ROLES.map((role) => (
+                            <SelectItem key={role} value={role}>
+                              {role.charAt(0) + role.slice(1).toLowerCase()}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {showCreatorFields && (
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="inviteCode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Creator Invite Code</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="password"
+                              placeholder="Enter invite code"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="bio"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Bio</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Tell us about yourself"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="socialLinks.instagram"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Instagram Handle</FormLabel>
+                          <FormControl>
+                            <Input placeholder="@username" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="socialLinks.youtube"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>YouTube Handle</FormLabel>
+                          <FormControl>
+                            <Input placeholder="@username" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </>
                 )}
-              />
 
-              {showCreatorFields && (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="inviteCode"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Creator Invite Code</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="Enter invite code"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="bio"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Bio</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Tell us about yourself"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="socialLinks.instagram"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Instagram Handle</FormLabel>
-                        <FormControl>
-                          <Input placeholder="@username" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="socialLinks.youtube"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>YouTube Handle</FormLabel>
-                        <FormControl>
-                          <Input placeholder="@username" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
-              )}
-
-              <Button type="submit" className="w-full">
-                Sign Up
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+                <Button type="submit" className="w-full">
+                  Sign Up
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }

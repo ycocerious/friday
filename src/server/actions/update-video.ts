@@ -37,6 +37,7 @@ export const updateVideo = async (input: UpdateVideoParams) => {
   console.log("analysis", analysis);
 
   const tags = [
+    video.location,
     ...analysis.atmosphere.types,
     ...analysis.atmosphere.climate,
     ...analysis.activities,

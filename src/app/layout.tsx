@@ -3,12 +3,20 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import { Navbar } from "~/components/navbar";
 
 export const metadata: Metadata = {
   title: "Friday",
-  description: "Find your next travel destination",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  description: "Social Media for travellers",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      {
+        url: "/logo.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+  },
 };
 
 const geist = Geist({
@@ -23,7 +31,6 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable}`}>
       <body>
         <Toaster position="top-center" />
-        <Navbar />
         {children}
       </body>
     </html>

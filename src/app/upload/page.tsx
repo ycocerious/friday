@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 import { userAtom } from "~/lib/auth";
 
 import { createSupabaseClient } from "~/lib/db/supabase.client";
@@ -17,6 +19,7 @@ import { updateVideo } from "~/server/actions/update-video";
 export default function UploadPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [location, setLocation] = useState("");
   const [storedUser] = useAtom(userAtom);
   const supabase = createSupabaseClient();
   const router = useRouter();
@@ -40,13 +43,17 @@ export default function UploadPage() {
     try {
       if (!file) return;
       if (!storedUser) return;
+      if (!location.trim()) {
+        toast.error("Please enter a location");
+        return;
+      }
 
       setIsUploading(true);
 
       // 1. Get signed URL
       const result = await addVideo({
         creatorId: storedUser.id,
-        location: "Bengaluru",
+        location: location.trim(),
       });
 
       if (!result.success || !result.signedResponse) {
@@ -116,7 +123,17 @@ export default function UploadPage() {
             Upload Video
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="location">Location</Label>
+            <Input
+              id="location"
+              placeholder="Enter video location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              disabled={isUploading}
+            />
+          </div>
           <div
             className={cn(
               "flex flex-col items-center justify-center space-y-4 rounded-lg border-2 border-dashed p-6",

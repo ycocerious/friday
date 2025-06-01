@@ -28,26 +28,12 @@ export default function HomePage() {
             Friday
           </span>
         </div>
-        <div className="hidden gap-8 text-base font-medium text-white/80 md:flex">
-          <a href="#why" className="transition hover:text-white">
-            Why
-          </a>
-          <a href="#how" className="transition hover:text-white">
-            How
-          </a>
-          <a href="#about" className="transition hover:text-white">
-            About
-          </a>
-        </div>
         <div className="flex gap-3">
           <Link
-            href="/login"
+            href="/sign-in"
             className="rounded-full border border-white/20 bg-transparent px-5 py-2 font-bold tracking-wide text-white/80 uppercase transition hover:bg-white/10"
           >
             Log In
-          </Link>
-          <Link href="/sign-in" className="cta-pill">
-            Join Now
           </Link>
         </div>
       </nav>
