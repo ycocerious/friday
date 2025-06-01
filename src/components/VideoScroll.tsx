@@ -66,7 +66,6 @@ export function VideoScroll() {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
   const [userQuery, setUserQuery] = useState("");
-  const [wantsToAccessThisPage, setWantsToAccessThisPage] = useState(false);
 
   const handleSearch = () => {
     setUserQuery(searchInput);
@@ -80,39 +79,9 @@ export function VideoScroll() {
 
   useEffect(() => {
     if (isClient && !storedUser) {
-      router.push("/sign-in");
-    } else {
-      setWantsToAccessThisPage(true);
+      router.replace("/sign-in");
     }
   }, [isClient, storedUser, router]);
-
-  // Update the repeated videos creation to use deterministic selection
-  const repeatedVideos =
-    videos.length === 0
-      ? []
-      : Array.from({ length: 20 }, (_, index) => {
-          const videoIndex = index % videos.length;
-          const video = videos[videoIndex];
-          if (!video) return null;
-          const instanceId = `${video.id}-${index}`;
-
-          // Use the instanceId to consistently select avatar and color
-          const avatarIndex = getConsistentRandomIndex(
-            instanceId,
-            AVATAR_ICONS.length,
-          );
-          const colorIndex = getConsistentRandomIndex(
-            instanceId + "color",
-            AVATAR_COLORS.length,
-          );
-
-          return {
-            ...video,
-            instanceId,
-            avatarIcon: AVATAR_ICONS[avatarIndex],
-            avatarColor: AVATAR_COLORS[colorIndex],
-          };
-        }).filter(Boolean);
 
   useEffect(() => {
     const videos = videoRefs.current;
@@ -146,13 +115,38 @@ export function VideoScroll() {
     };
   }, []);
 
-  if (!isClient || !wantsToAccessThisPage) {
-    return (
-      <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4 pb-24">
-        <p className="text-muted-foreground">Loading...</p>
-      </div>
-    );
+  // Show nothing until we confirm client-side and auth
+  if (!isClient || !storedUser) {
+    return null;
   }
+
+  // Update the repeated videos creation to use deterministic selection
+  const repeatedVideos =
+    videos.length === 0
+      ? []
+      : Array.from({ length: 20 }, (_, index) => {
+          const videoIndex = index % videos.length;
+          const video = videos[videoIndex];
+          if (!video) return null;
+          const instanceId = `${video.id}-${index}`;
+
+          // Use the instanceId to consistently select avatar and color
+          const avatarIndex = getConsistentRandomIndex(
+            instanceId,
+            AVATAR_ICONS.length,
+          );
+          const colorIndex = getConsistentRandomIndex(
+            instanceId + "color",
+            AVATAR_COLORS.length,
+          );
+
+          return {
+            ...video,
+            instanceId,
+            avatarIcon: AVATAR_ICONS[avatarIndex],
+            avatarColor: AVATAR_COLORS[colorIndex],
+          };
+        }).filter(Boolean);
 
   if (isLoading) {
     return (
