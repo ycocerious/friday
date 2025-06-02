@@ -1,5 +1,6 @@
 import { atomWithStorage } from "jotai/utils";
 import { z } from "zod";
+import { userRoleSchema } from "~/server/db/schema";
 
 // 1. Define schema for user
 const userSchema = z
@@ -7,7 +8,7 @@ const userSchema = z
     id: z.string(),
     email: z.string().email(),
     name: z.string().nullable(),
-    role: z.string(),
+    role: userRoleSchema,
   })
   .nullable()
   .catch(null);

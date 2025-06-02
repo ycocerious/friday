@@ -1,11 +1,20 @@
 "use client";
 
+import { useAtom } from "jotai";
 import { Home, Plus, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { userAtom } from "~/lib/auth";
 import { cn } from "~/lib/utils";
 
-const navItems = [
+type NavItem = {
+  icon: typeof Home;
+  href: string;
+  label: string;
+  requiresCreator?: boolean;
+};
+
+const baseNavItems: NavItem[] = [
   {
     icon: Home,
     href: "/",
@@ -15,6 +24,7 @@ const navItems = [
     icon: Plus,
     href: "/upload",
     label: "Create",
+    requiresCreator: true,
   },
   {
     icon: User,
@@ -25,6 +35,12 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const [storedUser] = useAtom(userAtom);
+  const isCreator = storedUser?.role === "CREATOR";
+
+  const navItems = baseNavItems.filter(
+    (item) => !item.requiresCreator || isCreator,
+  );
 
   return (
     <div className="fixed right-0 bottom-0 left-0 z-50 flex justify-center">
